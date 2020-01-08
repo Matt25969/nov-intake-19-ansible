@@ -8,6 +8,13 @@
       - docker
       append: true
       shell: /bin/bash
+  - name: "ssh folder"
+    file:
+      path: /home/jenkins/.ssh
+      state: directory
+      mode: "0700"
+      owner: jenkins
+      group: jenkins
   - name: install ssh key
     copy:
       src: ~/.ssh/ansible_id_rsa.pub
@@ -22,7 +29,7 @@
       update_cache: true
   - name: "docker-py"
     pip:
-      name: docker-py
+      name: docker
   - name: "initialise swarm"
     docker_swarm:
       state: present

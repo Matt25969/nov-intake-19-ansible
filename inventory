@@ -1,8 +1,8 @@
 [jenkins]
-35.246.8.90
+35.246.1.180
 
 [swarm-master]
-35.246.26.42
+35.246.8.90
 
 [swarm-master:vars]
 ansible_user=bob

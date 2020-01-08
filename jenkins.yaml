@@ -8,6 +8,13 @@
       - docker
       append: true
       shell: /bin/bash
+  - name: "ssh folder"
+    file:
+      path: /home/jenkins/.ssh
+      state: directory
+      mode: "0700"
+      owner: jenkins
+      group: jenkins
   - name: install private key
     copy:
       src: ~/.ssh/ansible_id_rsa
@@ -42,7 +49,7 @@
       dest: /home/jenkins/job.yaml
       owner: jenkins
       group: jenkins
-      mode: u=rw,g=wq,o=
+      mode: u=rw,g=rw,o=
   - name: "python pip"
     apt:
       name: python-pip
@@ -50,7 +57,7 @@
       update_cache: true
   - name: "docker sdk"
     pip:
-     name: docker-py
+     name: docker
   - name: "docker registry container"
     docker_container:
       name: registry
