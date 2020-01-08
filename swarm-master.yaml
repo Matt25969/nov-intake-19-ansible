@@ -1,0 +1,29 @@
+- hosts: swarm-master
+  become: true
+  tasks:
+  - name: jenkins user
+    user:
+      name: jenkins
+      groups: 
+      - docker
+      append: true
+      shell: /bin/bash
+  - name: install ssh key
+    copy:
+      src: ~/.ssh/ansible_id_rsa.pub
+      dest: /home/jenkins/.ssh/authorized_keys
+      owner: jenkins
+      group: jenkins
+      mode: u=rw,g=,o=
+  - name: "python pip"
+    apt:
+      name: python-pip
+      state: present
+      update_cache: true
+  - name: "docker-py"
+    pip:
+      name: docker-py
+  - name: "initialise swarm"
+    docker_swarm:
+      state: present
+
