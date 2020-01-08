@@ -1,6 +1,20 @@
 - hosts: localhost
   connection: local
   tasks:
-  - name: 'docker build'
-
-
+  - name: 'build image'
+    docker_image:
+      build:
+        path: "{{ lookup('env', 'WORKSPACE') }}"
+      name: jenkins:5000/python-http-server
+      tag: "{{ lookup('env', 'IMAGE_TAG') }}"
+      source: build
+      push: true
+- hosts: swarm-master
+  tasks:
+  - name: "run swarm service"
+    docker_swarm_service:
+      name: python-http-server
+      image: "jenkins:5000/python-http-server:{{ lookup('env', 'IMAGE_TAG') }}"
+      publish:
+        - published_port: 9000
+          target_port: 9000
